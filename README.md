@@ -41,7 +41,7 @@ BlogAPI/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/prasannadhami14/Blog_API_Express.git
 cd BlogAPI
 ```
 
