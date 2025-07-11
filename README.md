@@ -122,7 +122,7 @@ See [Swagger UI](http://localhost:8000/api-docs) for detailed request/response s
 
 ## License
 
-@copy CopyRight PrashannDhami
+Prashanna_Dhami
 
 ---
 
