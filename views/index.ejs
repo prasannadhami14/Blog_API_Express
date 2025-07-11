@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        h1 { color: #333; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 1em; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .route { font-weight: bold; }
+        .method { font-size: 0.9em; color: #555; margin-right: 0.5em; }
+    </style>
+</head>
+<body>
+    
+    <h1>Available Blog API Routes</h1>
+     <div class="note">
+        <strong>Note:</strong> You must create a category first before creating a blog. Use <span class="route">POST /api/blogs/addCategory</span> to add a category.
+    </div>
+    <ul>
+        <li>
+            <span class="method">GET</span>
+            <span class="route">/api/blogs</span><br>
+            <a href="/api/blogs" target="_blank">List all blogs</a>
+        </li>
+        <li>
+            <span class="method">POST</span>
+            <span class="route">/api/blogs</span><br>
+            <code>title, description, categoryId</code> in JSON body<br>
+            <a href="/api-docs/#/Blogs/CreateBlog" target="_blank">Create a new blog</a>
+        </li>
+        <li>
+            <span class="method">GET</span>
+            <span class="route">/api/blogs/{uuid}</span><br>
+            <a href="/api-docs/#/Blogs/getAllBlogsById" target="_blank">Get blog by UUID</a>
+        </li>
+        <li>
+            <span class="method">PATCH</span>
+            <span class="route">/api/blogs/{uuid}</span><br>
+            <code>title, description, categoryId</code> in JSON body<br>
+            <a href="/api-docs/#/Blogs/UpdateBlogById" target="_blank">Update blog by UUID</a>
+        </li>
+        <li>
+            <span class="method">POST</span>
+            <span class="route">/api/blogs/addCategory</span><br>
+            <code>name</code> in JSON body<br>
+            <a href="/api-docs/#/Categories/createCategory" target="_blank">Add a new category</a>
+        </li>
+        <li>
+            <span class="method">GET</span>
+            <span class="route">/api-docs</span><br>
+            <a href="/api-docs" target="_blank">Swagger API Documentation</a>
+        </li>
+    </ul>
+</body>
+</html>

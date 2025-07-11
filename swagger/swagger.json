@@ -1,0 +1,455 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Blog API",
+    "description": "A RESTful API for managing blogs and categories, using UUIDs for identification.\n\n**Note:** You must create a category first before creating a blog. Use `POST /api/blogs/addCategory` to add a category.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/api/blogs/addCategory": {
+      "post": {
+        "summary": "Create a new category",
+        "description": "Creates a new category with a unique name. Returns the created category with a UUID.",
+        "operationId": "createCategory",
+        "tags": ["Categories"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the category (must be unique).",
+                    "example": "Technology"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g., missing name or duplicate name)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blogs": {
+      "post": {
+        "summary": "Create a new blog",
+        "description": "Creates a new blog with a title, description, and category UUID.",
+        "operationId": "CreateBlog",
+        "tags": ["Blogs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "description", "categoryId"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the blog.",
+                    "example": "My First Blog"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The content of the blog.",
+                    "example": "A blog about tech."
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The UUID of the associated category.",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g., missing fields or invalid categoryId)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List all blogs",
+        "description": "Retrieves all blogs with their associated category names.",
+        "operationId": "getAllBlogs",
+        "tags": ["Blogs"],
+        "responses": {
+          "200": {
+            "description": "List of blogs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BlogWithCategory"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blogs/{uuid}": {
+      "get": {
+        "summary": "Get a blog by UUID",
+        "description": "Retrieves a blog by its UUID, including its category name.",
+        "operationId": "getAllBlogsById",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The UUID of the blog",
+            "example": "987fcdeb-1234-5678-90ab-426614174001"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogWithCategory"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a blog by UUID",
+        "description": "Updates a blog's title, description, or category by its UUID.",
+        "operationId": "UpdateBlogById",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The UUID of the blog",
+            "example": "987fcdeb-1234-5678-90ab-426614174001"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The updated title of the blog.",
+                    "example": "Updated Blog"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The updated content of the blog.",
+                    "example": "Updated tech blog."
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The updated UUID of the associated category.",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blog updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g., invalid categoryId)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog or category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "required": ["id", "name", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The UUID of the category.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the category.",
+            "example": "Technology"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the category was created.",
+            "example": "2025-07-08T21:45:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the category was last updated.",
+            "example": "2025-07-08T21:45:00.000Z"
+          }
+        }
+      },
+      "Blog": {
+        "type": "object",
+        "required": ["id", "title", "description", "categoryId", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The UUID of the blog.",
+            "example": "987fcdeb-1234-5678-90ab-426614174001"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the blog.",
+            "example": "My First Blog"
+          },
+          "description": {
+            "type": "string",
+            "description": "The content of the blog.",
+            "example": "A blog about tech."
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The UUID of the associated category.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the blog was created.",
+            "example": "2025-07-08T21:46:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the blog was last updated.",
+            "example": "2025-07-08T21:46:00.000Z"
+          }
+        }
+      },
+      "BlogWithCategory": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Blog" },
+          {
+            "type": "object",
+            "properties": {
+              "BlogCategory": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the associated category.",
+                    "example": "Technology"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CategoryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Success message.",
+            "example": "Category created successfully"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          }
+        }
+      },
+      "BlogResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Success message.",
+            "example": "Blog created successfully"
+          },
+          "blog": {
+            "$ref": "#/components/schemas/Blog"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "Category name is required"
+          }
+        }
+      }
+    }
+  }
+}
