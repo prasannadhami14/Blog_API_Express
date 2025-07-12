@@ -1,0 +1,130 @@
+{
+    "info": {
+        "_postman_id": "68a5c2cf-fdcb-4c66-a5fe-24f87286efb6",
+        "name": "Blog_API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "http://localhost:8000/blogs/category",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/blogs/addCategory",
+                    "path": [
+                        "api",
+                        "blogs",
+                        "addCategory"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n    \"name\":\"Tech\"\n}"
+                }
+            }
+        },
+        {
+            "name": "http://localhost:8000/blogs",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/blogs/",
+                    "path": [
+                        "api",
+                        "blogs"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "http://localhost:8000/blogs",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/blogs/6fab9260-1493-4f99-8075-f6b50de18745",
+                    "path": [
+                        "api",
+                        "blogs",
+                        "6fab9260-1493-4f99-8075-f6b50de18745"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "http://localhost:8000/blogs",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/blogs/6fab9260-1493-4f99-8075-f6b50de18745",
+                    "path": [
+                        "api",
+                        "blogs",
+                        "6fab9260-1493-4f99-8075-f6b50de18745"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"id\": \"6fab9260-1493-4f99-8075-f6b50de18745\",\n  \"title\": \"hey Blog its updated\",\n  \"description\": \"Updated tech blog.\",\n  \"categoryId\": \"5ec622ee-ec77-45df-8eec-0ad11a0b2c96\",\n  \"createdAt\": \"2025-07-08T16:36:37.000Z\",\n  \"updatedAt\": \"2025-07-08T16:40:46.000Z\",\n  \"BlogCategory\": {\n    \"name\": \"test\"\n  }\n}"
+                }
+            }
+        },
+        {
+            "name": "http://localhost:8000/blogs",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/blogs/",
+                    "path": [
+                        "api",
+                        "blogs"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\r\n  \"title\": \"How to Use Node.js with MySQL\",\r\n  \"description\": \"This blog explains how to connect Node.js applications to MySQL using Sequelize.\",\r\n  \"categoryId\":\"61dc05ec-39bf-4270-97cf-dd48521b7921\"\r\n}"
+                }
+            }
+        }
+    ]
+}
